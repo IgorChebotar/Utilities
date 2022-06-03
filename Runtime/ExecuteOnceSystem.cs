@@ -35,12 +35,12 @@ namespace SimpleMan.Utilities
                 return;
             }
 
+            //Wait frame
+            await Task.Yield();
+
             //Invoke actions in immidiate list
             for (int i = 0; i < _frameActions.Count; i++)
                 _frameActions[i]?.Invoke();
-
-            //Wait frame
-            await Task.Yield();
 
             //Clear action list
             _frameActions.Clear();
