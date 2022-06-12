@@ -18,7 +18,7 @@ namespace SimpleMan.Utilities
 
 
         //------METHODS
-        public static void ExecuteOncePerFrame(Action action)
+        public static void ExecuteOnceInNextFrame(Action action)
         {
             _frameActions.AddUnique(action);
 
@@ -38,19 +38,19 @@ namespace SimpleMan.Utilities
             //Wait frame
             await Task.Yield();
 
-            //Invoke actions in immidiate list
-            for (int i = 0; i < _frameActions.Count; i++)
-                _frameActions[i]?.Invoke();
-
-            //Clear action list
-            _frameActions.Clear();
-
             //Is game stopped? -> break
             if (!Application.isPlaying)
             {
                 _running = false;
                 return;
             }
+
+            //Invoke actions in immidiate list
+            for (int i = 0; i < _frameActions.Count; i++)
+                _frameActions[i]?.Invoke();
+
+            //Clear action list
+            _frameActions.Clear();
             _running = false;
         }
     }

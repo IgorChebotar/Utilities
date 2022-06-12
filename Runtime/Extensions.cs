@@ -97,9 +97,9 @@ namespace SimpleMan.Utilities
             throw new System.NullReferenceException($"<b>{target.GetNameWithoutPrefix()}:</b> {message}");
         }
 
-        public static void ThrowEmptyFieldException(this Object target, string fieldName)
+        public static void ThrowEmptyFieldException(this Object target, string fieldName, string message = "")
         {
-            throw new System.NullReferenceException($"<b>{target.GetNameWithoutPrefix()}:</b> field <b>'{fieldName}'</b> is empty.");
+            throw new System.NullReferenceException($"<b>{target.GetNameWithoutPrefix()}:</b> field <b>'{fieldName}'</b> is empty. {message}");
         }
 
         public static void ThrowArgumentNullException(this Object target, string argumentName, string message = "")
@@ -107,9 +107,12 @@ namespace SimpleMan.Utilities
             throw new System.ArgumentNullException($"<b>{target.GetNameWithoutPrefix()}:</b>", $"<b>'{argumentName}'</b> is out of range. {message}");
         }
 
-        public static void ThrowComponentNullException(this Object target, System.Type component, string gameObjectName = "")
+        public static void ThrowComponentNullException(this Object target, string componentName)
         {
-            throw new System.ArgumentNullException($"<b>{target.GetNameWithoutPrefix()}:</b>", $"Component <b>'{component.GetType().Name}'</b> not exist on <b>'{gameObjectName}'</b>");
+            throw new System.NullReferenceException(
+                $"<b>{target.GetNameWithoutPrefix()}:</b> " +
+                $"Component <b>'{componentName}'</b> " +
+                $"not exist on this game object");
         }
 
         public static void ThrowInvalidOperationException(this Object target, string message)
@@ -132,19 +135,25 @@ namespace SimpleMan.Utilities
             throw new System.NullReferenceException($"<b>{target.GetNameWithoutPrefix()}:</b> Game event/request/vote named <b>'{eventName}'</b> can not be found. Check the <b>'Event library'</b> object on scene");
         }
 
-        public static void ThrowSceneObjectNullException(this Object target, string objectName)
+        public static void ThrowSceneObjectNullException(this Object target, string objectName, string message = "")
         {
-            throw new System.NullReferenceException($"<b>{target.GetNameWithoutPrefix()}:</b> Game object <b>'{objectName}'</b> not exist. You need to add <b>'{objectName}'</b> prefab on scene");
+            throw new System.NullReferenceException(
+                $"<b>{target.GetNameWithoutPrefix()}:</b> Game object <b>'{objectName}'</b> not exist. " +
+                $"You need to add <b>'{objectName}'</b> prefab on scene. {message}");
         }
 
-        public static void ThrowMustBeChildOfException(this Object target, string parentComponentName)
+        public static void ThrowMustBeChildOfException(this Object target, string parentComponentName, string message = "")
         {
-            throw new System.NullReferenceException($"<b>{target.GetNameWithoutPrefix()}:</b> This game object must be child of <b>'{parentComponentName}'</b>.");
+            throw new System.NullReferenceException(
+                $"<b>{target.GetNameWithoutPrefix()}:</b> This game object must be child " +
+                $"of <b>'{parentComponentName}'</b>. {message}");
         }
 
-        public static void ThrowForbiddenInEditorMode(this Object target, string methodName)
+        public static void ThrowForbiddenInEditorMode(this Object target, string methodName, string message = "")
         {
-            throw new System.InvalidOperationException($"<b>{target.GetNameWithoutPrefix()}:</b> Operation '{methodName}' forbidden in editor mode");
+            throw new System.InvalidOperationException(
+                $"<b>{target.GetNameWithoutPrefix()}:</b> Operation '{methodName}' " +
+                $"forbidden in editor mode. {message}");
         }
 
         public static void PrintLogRequestReceived(this Object target, Object sender, string requestName)

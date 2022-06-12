@@ -19,4 +19,9 @@
 * Execute once system fixed
 
 
+## [1.1.2] - 2022-06-12
+### Changed
+* Execute once system fixed
+
+
 
