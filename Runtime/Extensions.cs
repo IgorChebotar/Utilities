@@ -1,10 +1,50 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace SimpleMan.Utilities
 {
     public static class CollectionsExtensions
     {
+        public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
+        {
+            foreach (T item in source)
+                action(item);
+        }
+
+        public static IEnumerable<T> Except<T>(this IEnumerable<T> source, T element)
+        {
+            foreach(T item in source)
+            {
+                if (item.Equals(element))
+                    continue;
+
+                yield return item;
+            }
+        }
+
+        public static int GetElementIndexByKey<TKey, TValue>(this Dictionary<TKey, TValue> source, TKey element)
+        {
+            if(!source.ContainsKey(element))
+            {
+                throw new ArgumentException(
+                    $"Dictionary not contains key '{element}'. " +
+                    $"Use 'Contains' method before index cheking");
+            }
+            
+            int index = 0;
+            foreach (var pair in source)
+            {
+                if(pair.Key.Equals(element))
+                    return index;
+
+                index++;
+            }
+
+            return -1;
+        }
+
         public static void AddUnique<T>(this List<T> target, T item)
         {
             if (target.Contains(item))
@@ -40,31 +80,53 @@ namespace SimpleMan.Utilities
 
     public static class TransformExtensions
     {
-        public static Transform[] GetChildren(this Transform target)
+        public static bool IsDirectChildOf(this Transform child, Transform parent)
         {
-            if (!target)
-                throw new System.ArgumentNullException("Target");
-
-            Transform[] children = new Transform[target.childCount];
-            for (int i = 0; i < target.childCount; i++)
-                children[i] = target.GetChild(i);
-
-            return children;
+            return child.parent == parent;
         }
 
-        public static T[] GetChildrenOfType<T>(this Transform target)
+        public static bool IsDirectParentOf(this Transform parent, Transform child)
+        {
+            return child && child.parent == parent;
+        }
+
+        public static Transform[] GetDirectChildren(this Transform target, bool ignoreDisabled = true)
         {
             if (!target)
                 throw new System.ArgumentNullException("Target");
 
-            List<T> children = new List<T>();
+            List<Transform> result = new List<Transform>(target.childCount);
+            Transform childTransform;
+            for (int i = 0; i < target.childCount; i++)
+            {
+                childTransform = target.GetChild(i);
+                if (ignoreDisabled && !childTransform.gameObject.activeSelf)
+                    continue;
+
+                result.Add(childTransform);
+            }
+                
+            return result.ToArray();
+        }
+
+        public static T[] GetDirectChildrenOfType<T>(this Transform target, bool includeDisabled = true)
+        {
+            if (!target)
+                throw new System.ArgumentNullException("Target");
+
+            List<T> result = new List<T>(target.childCount);
             for (int i = 0; i < target.childCount; i++)
             {
                 if (target.GetChild(i).TryGetComponent(out T component))
-                    children.Add(component);
+                {
+                    if (!includeDisabled && !(component as Component).gameObject.activeSelf)
+                        continue;
+
+                    result.Add(component);
+                }     
             }
 
-            return children.ToArray();
+            return result.ToArray();
         }
 
         public static void DestroyChildren(this Transform target, int from = 0)
@@ -104,7 +166,7 @@ namespace SimpleMan.Utilities
 
         public static void ThrowArgumentNullException(this Object target, string argumentName, string message = "")
         {
-            throw new System.ArgumentNullException($"<b>{target.GetNameWithoutPrefix()}:</b>", $"<b>'{argumentName}'</b> is out of range. {message}");
+            throw new System.ArgumentNullException($"<b>{argumentName}</b>", $"<b>{target.GetNameWithoutPrefix()}:</b>. {message}");
         }
 
         public static void ThrowComponentNullException(this Object target, string componentName)

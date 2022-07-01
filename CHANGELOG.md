@@ -24,4 +24,15 @@
 * Execute once system fixed
 
 
+## [1.1.3] - 2022-06-15
+### Added
+* 'Foreach' extension for IEnumerable
+* 'IncludeDisabled' bool parameter for 'GetChildrenOfType' and 
+'GetDirectDirectChildrenOfType' methods
+
+### Changed
+* Method 'GetChildren' renamed to 'GetDirectChildren'
+* Method 'GetChildrenOfType' renamed to 'GetDirectDirectChildrenOfType'
+
+
 
