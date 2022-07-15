@@ -35,4 +35,7 @@
 * Method 'GetChildrenOfType' renamed to 'GetDirectDirectChildrenOfType'
 
 
-
+## [1.1.4] - 2022-07-15
+### Added
+* String extension 'ToSplitPascalCase' 
+* String extension 'WithoutWhiteSpaces'

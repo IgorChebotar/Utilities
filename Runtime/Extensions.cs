@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Text;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -284,7 +286,74 @@ namespace SimpleMan.Utilities
     }
 
     public static class BaseTypesExtensions
-    {
+    { 
+        /// <summary>
+        /// SadButTrue -> Sad But True
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static string ToSplitPascalCase(this string input)
+        {
+            if (input == null || input.Length == 0)
+            {
+                return input;
+            }
+
+            StringBuilder stringBuilder = new StringBuilder(input.Length);
+            if (char.IsLetter(input[0]))
+            {
+                stringBuilder.Append(char.ToUpper(input[0]));
+            }
+            else
+            {
+                stringBuilder.Append(input[0]);
+            }
+
+            for (int i = 1; i < input.Length; i++)
+            {
+                char c = input[i];
+                if (char.IsUpper(c) && !char.IsUpper(input[i - 1]))
+                {
+                    stringBuilder.Append(' ');
+                }
+
+                stringBuilder.Append(c);
+            }
+
+            return stringBuilder.ToString();
+        }
+
+        /// <summary>
+        /// Sad But True -> SadButTrue
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static string WithoutSpaces(this string input)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = 0; i < input.Length; i++)
+            {
+                char c = input[i];
+                if (c == ' ' && i + 1 < input.Length)
+                {
+                    char c2 = input[i + 1];
+                    if (char.IsLower(c2))
+                    {
+                        c2 = char.ToUpper(c2, CultureInfo.InvariantCulture);
+                    }
+
+                    stringBuilder.Append(c2);
+                    i++;
+                }
+                else
+                {
+                    stringBuilder.Append(c);
+                }
+            }
+
+            return stringBuilder.ToString();
+        }
+
         public static float ClampPositive(this float value)
         {
             return Mathf.Clamp(value, 0, float.MaxValue);
@@ -317,6 +386,15 @@ namespace SimpleMan.Utilities
         public static Color Invert(this Color value)
         {
             return new Color(1 - value.r, 1 - value.g, 1 - value.b);
+        }
+
+        public static Color WithAlpha(this Color value, float alpha)
+        {
+            return new Color(
+                    value.r,
+                    value.g,
+                    value.b,
+                    Mathf.Clamp01(alpha));
         }
 
         public static Color MaxAlpha(this Color value)
