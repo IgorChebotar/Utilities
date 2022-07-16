@@ -1,4 +1,4 @@
-# SimpleMan.Utilities
+# SimpleMan.Utilities [Download](https://github.com/IgorChebotar/Utilities/releases)
 Standard utilities for any project on Unity engine. 
 
 **Author:** Igor-Valerii Chebotar
