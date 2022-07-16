@@ -61,7 +61,10 @@ ExecuteOnceSystem.ExecuteOncePerFrame(( ) => DoAction("Hello"))
 ### Methods
 | Function name | Description                    |
 | ------------- | ------------------------------ |
-| AddUnique      | Works with list, queue, stack and dictionary. Ignore *Add* action if collection already contains element|
+|AddUnique      | Works with list, queue, stack and dictionary. Ignore *Add* action if collection already contains element|
+|Except| Returns collection without element|
+|Validate| Returns collection without null elements|
+|ForEach| Make action for each element in collection|
 
 ### C# Examples
 ```C# 
@@ -144,6 +147,8 @@ if(TryGetComponentInParent<Animator>(out Animator animator) == false)
 ### Methods
 | Function name | Description                    |
 | ------------- | ------------------------------ |
+| (string) ToSplitPascalCase| SadButTrue -> Sad But True|
+| (string) WithoutSpaces| Sad But True -> SadButTrue|
 | (float, int) ClampPositive      | Return closest positive value |
 | (string) FirstCharToUpper      | Return string with upper first character |
 | (Vector2) XY2XZ      | Return Vector3 as projection of XY plane to XZ |

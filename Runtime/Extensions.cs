@@ -26,6 +26,21 @@ namespace SimpleMan.Utilities
             }
         }
 
+        /// <summary>
+        /// Returns collection without null elements
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> Validate<T>(this IEnumerable<T> source)
+        {
+            foreach (T item in source)
+            {
+                if (item != null)
+                    yield return item;
+            }
+        }
+
         public static int GetElementIndexByKey<TKey, TValue>(this Dictionary<TKey, TValue> source, TKey element)
         {
             if(!source.ContainsKey(element))

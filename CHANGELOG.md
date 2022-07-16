@@ -39,3 +39,8 @@
 ### Added
 * String extension 'ToSplitPascalCase' 
 * String extension 'WithoutWhiteSpaces'
+
+
+## [1.1.5] - 2022-07-16
+### Added
+* IEnumerable extension 'Validate'
