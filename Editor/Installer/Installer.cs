@@ -9,25 +9,19 @@ namespace SimpleMan.Utilities.Editor
         //------METHODS
         static Installer()
         {
-            //IsOdinExist();
+            if(!IsAssetAlreadyImported())
+                InstallerWindow.Init();
         }
 
         public static void Install()
         {
-            if (!IsMainPackageExist())
-            {
-                throw new System.NullReferenceException(
-                    "<b>Utilities:</b> Main package don't exist. Reimport plugin manually.");
-            }
-
-            var asset = AssetDatabase.LoadAssetAtPath<DefaultAsset>(MAIN_PACKAGE_PATH);
             AssetDatabase.ImportPackage(MAIN_PACKAGE_PATH, true);
         }
 
-        public static bool IsMainPackageExist()
+        public static bool IsAssetAlreadyImported()
         {
-            var asset = AssetDatabase.LoadAssetAtPath<DefaultAsset>(MAIN_PACKAGE_PATH);
-            return asset == null;
+            string[] subfolders = AssetDatabase.GetSubFolders(MAIN_FOLDER_PATH);
+            return subfolders.Length > 1;
         }
 
         public static bool IsOdinExist()

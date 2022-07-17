@@ -7,7 +7,7 @@ namespace SimpleMan.Utilities.Editor
     {
         //------METHODS
         [MenuItem("Tools/Simple Man/Utilities/Installer")]
-        private static void Init()
+        public static void Init()
         {
             InstallerWindow window = (InstallerWindow)EditorWindow.GetWindow(typeof(InstallerWindow));
             window.Show();
@@ -43,17 +43,16 @@ namespace SimpleMan.Utilities.Editor
                         "One or more of dependencies was not found. " +
                         "Import and install the dependencies plugins first", MessageType.Error);
                 }
-                    
 
-                if (GUILayout.Button("Install"))
+                string buttonName = Installer.IsAssetAlreadyImported() ? "Reinstall" : "Install";
+                if (GUILayout.Button(buttonName))
                 {
                     Installer.Install();
                 }
 
                 GUI.enabled = true;
             }
-            DrawInstallButton();
-            
+            DrawInstallButton(); 
         }
 
 
