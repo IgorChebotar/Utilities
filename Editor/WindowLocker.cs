@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using Object = System.Object;
 
-namespace SimpleMan.Utilities
+namespace SimpleMan.Utilities.Editor
 {
     public class EditorWindowLock
     {
