@@ -16,7 +16,7 @@ namespace SimpleMan.Utilities.Editor
         private void OnGUI()
         {
             bool isOdinExist = Installer.IsOdinExist();
-            bool allright = true;
+            bool allright = isOdinExist;
 
             void DrawLabel()
             {
@@ -41,7 +41,7 @@ namespace SimpleMan.Utilities.Editor
                     GUI.enabled = false;
                     EditorGUILayout.HelpBox(
                         "One or more of dependencies was not found. " +
-                        "Import and install the dependencies plugins first", MessageType.Error);
+                        "Import and install the dependencies first", MessageType.Error);
                 }
 
                 string buttonName = Installer.IsAssetAlreadyImported() ? "Reinstall" : "Install";
@@ -52,9 +52,7 @@ namespace SimpleMan.Utilities.Editor
 
                 GUI.enabled = true;
             }
-            DrawInstallButton(); 
+            DrawInstallButton();
         }
-
-
     }
 }
