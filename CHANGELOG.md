@@ -44,3 +44,10 @@
 ## [1.1.5] - 2022-07-16
 ### Added
 * IEnumerable extension 'Validate'
+
+
+
+## [1.1.6] - 2022-07-17
+### Added
+* Plugin installer
+* Installer window
