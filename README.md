@@ -67,7 +67,7 @@ ExecuteOnceSystem.ExecuteOncePerFrame(( ) => DoAction("Hello"))
 |AddUnique      | Works with list, queue, stack and dictionary. Ignore *Add* action if collection already contains element|
 |Except | Returns collection without element|
 |Validate | Returns collection without null elements|
-|NullCheck | Throws an exeption when at lest one elemet is null|
+|NullCheck | Throws an exeption when at least one element is null|
 |ForEach | Make action for each element in collection|
 
 ### C# Examples
