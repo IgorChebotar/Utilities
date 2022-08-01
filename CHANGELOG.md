@@ -51,3 +51,17 @@
 ### Added
 * Plugin installer
 * Installer window
+
+
+## [1.1.7] - 2022-07-17
+### Added
+* With extension (thanks, K-Syndicate)
+
+
+## [1.1.8] - 2022-08-01
+### Added
+* State machine (alpha)
+* NullCheck extension
+
+### Fixed
+* Assembly editor reference

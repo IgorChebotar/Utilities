@@ -41,6 +41,29 @@ namespace SimpleMan.Utilities
             }
         }
 
+        /// <summary>
+        /// Throws an exeption when at lest one elemet is null
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> NullCheck<T>(this IEnumerable<T> source, string exceptionText, Object context = null)
+        {
+            foreach (T item in source)
+            {
+                if (item == null)
+                {
+                    if (!context)
+                        throw new NullReferenceException(exceptionText);
+
+                    else
+                        context.ThrowNullReferenceException(exceptionText);
+                }
+            }
+
+            return source;
+        }
+
         public static int GetElementIndexByKey<TKey, TValue>(this Dictionary<TKey, TValue> source, TKey element)
         {
             if(!source.ContainsKey(element))
@@ -171,6 +194,28 @@ namespace SimpleMan.Utilities
 
     public static class ObjectExtensions
     {
+        public static T With<T>(this T source, Action<T> apply) 
+        {
+            apply?.Invoke(source);
+            return source;
+        }
+
+        public static T With<T>(this T source, Action<T> apply, bool when) 
+        {
+            if (when)
+                apply?.Invoke(source);
+
+            return source;
+        }
+
+        public static T With<T>(this T source, Action<T> apply, Func<bool> when) 
+        {
+            if (when())
+                apply?.Invoke(source);
+
+            return source;
+        }
+
         public static void ThrowNullReferenceException(this Object target, string message)
         {
             throw new System.NullReferenceException($"<b>{target.GetNameWithoutPrefix()}:</b> {message}");

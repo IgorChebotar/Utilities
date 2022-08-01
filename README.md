@@ -65,9 +65,10 @@ ExecuteOnceSystem.ExecuteOncePerFrame(( ) => DoAction("Hello"))
 | Function name | Description                    |
 | ------------- | ------------------------------ |
 |AddUnique      | Works with list, queue, stack and dictionary. Ignore *Add* action if collection already contains element|
-|Except| Returns collection without element|
-|Validate| Returns collection without null elements|
-|ForEach| Make action for each element in collection|
+|Except | Returns collection without element|
+|Validate | Returns collection without null elements|
+|NullCheck | Throws an exeption when at lest one elemet is null|
+|ForEach | Make action for each element in collection|
 
 ### C# Examples
 ```C# 
@@ -118,6 +119,7 @@ Health[] children = transform.GetChildrenOfType<Health>();
 | PrintWarning      | Print debug log warning message with name of the object caller|
 | SetPrefix      | Set prefix to the target game object|
 | GetNameWithoutPrefix      | Returns name of the target game object without prefix|
+| With      | Pseudo-builder |
 
 
 ### C# Examples
