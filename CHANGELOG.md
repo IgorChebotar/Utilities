@@ -65,3 +65,9 @@
 
 ### Fixed
 * Assembly editor reference
+
+
+
+## [1.2.0] - 2022-08-02
+### Removed
+* Old installer

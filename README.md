@@ -8,8 +8,7 @@ Standard utilities for any project on Unity engine.
 * [Sirenix - Odin Inspector](https://assetstore.unity.com/packages/tools/utilities/odin-inspector-and-serializer-89041#description "* Sirenix - Odin Inspector")
 
 ## How to install plugin?
-In installer window click 'Install' button it should appear automatically. 
-If window don't appear automatically you can find it in Tools -> [Plugins' name] -> Installer
+Open installer by the click on Tools -> Simple Man -> Master Installer -> [Plugins' name] -> Click 'Install' button. If you don't have one or more of the plugins this plugin depends on, you must install it first.
 
 
 ## Coroutines as MonoBehavior extensions
