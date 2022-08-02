@@ -18,7 +18,7 @@ namespace SimpleMan.Utilities.Editor
         static Installer()
         {
             if(!IsAssetAlreadyImported())
-                InstallerWindow.Init();
+                InstallerWindowLegacy.Init();
         }
 
         public static void Install()
