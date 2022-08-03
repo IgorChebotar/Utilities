@@ -71,3 +71,11 @@
 ## [1.2.0] - 2022-08-02
 ### Removed
 * Old installer
+
+
+
+## [1.3.0] - 2022-08-03
+### Added
+* IComponent interface
+* IContainer interface
+* IFrameStashContainer interface
