@@ -71,22 +71,3 @@
 ## [1.2.0] - 2022-08-02
 ### Removed
 * Old installer
-
-
-
-
-## [1.3.0] - 2022-09-08
-### Added
-* 'Check' static class
-* 'Random' extension for the collections
-* 'PrintLog' static class
-* 'ThrowException' static class
-* 'WithPrefix' and 'WithoutPrefex' extensions for strings
-* 'ToScene' object extension
-* New state machine with parameters support
-
-
-
-### Removed
-* Unused extensions for the 'Object' class
-* Old state machine 

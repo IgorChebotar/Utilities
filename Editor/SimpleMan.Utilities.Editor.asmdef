@@ -1,7 +1,9 @@
 {
     "name": "SimpleMan.Utilities.Editor",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:d68900d89ac369a41884483a85e0c4ce"
+    ],
     "includePlatforms": [
         "Editor"
     ],

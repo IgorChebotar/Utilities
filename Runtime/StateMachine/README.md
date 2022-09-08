@@ -40,26 +40,8 @@ this.DestroyAfter(3);
 this.Delay(3, ( ) =>DoAction("Hello!"));
 ```
 
-
-## Value checkers
-Gives ability to check the value without using 'if' keyword and throw an exception or print log to constole if check was failed. 
-
-### C# Examples
-```C# 
-//Check the "Health" value and call the "Death" method if it is zero, 
-Health.IfEqualZero().Execute(Death);
-
-//Check the "Armor" value and print message 'Armor is broken' to the console if it less than 0.5, . 
-Armor.IfLessThan(0.5f).PrintLog(gameObject.name, "Armor is broken");
-
-//Check the 'HealthBar' class reference and throw and exception if it is null
-HealthBar.IfNull().ThrowException(gameObject.name, "Health isn't exist");
-```
-
-
-
 ## Execute once system
-Gives ability to execute method only one time per frame, no matter how many calls was received. 
+gives ability to execute method only one time per frame, no matter how many calls was received. 
 
 ### Methods
 | Function name | Description                    |
@@ -77,32 +59,6 @@ ExecuteOnceSystem.ExecuteOncePerFrame(DoAction)
 //Works also with parameters
 ExecuteOnceSystem.ExecuteOncePerFrame(( ) => DoAction("Hello"))
 ```
-
-
-## State machine
-Make your state machine based on the 'StateMachine' class. It simple! The state machine supports up to 3 arguments in each state and custom tick range.
-
-```C# 
-//Create state machine for the Game class
-StateMachine<Game> _localStateMachine = new StateMachine<Game>()
-{
-	this,
-    new InitialState<Game>(this),
-    new LoadPlayerProgressState(this, _playerProgressService),
-    new LoadingState(this, _sceneManagerService),
-    new GameLoopState(this, _playerFactory, _uiFactory, _playerProgressService),
-    new EndGameState(this, _playerProgresService, _uiFactory)
-});
-
-//Start state machine from the initial state
-_localStateMachine.SwitchState<InitialState>();
-```
-
-```C# 
-//Switch state with the string parameter
-_localStateMachine.SwitchState<LoadingState, string>(sceneName);
-```
-
 ## Collection extensions
 ### Methods
 | Function name | Description                    |
@@ -112,7 +68,6 @@ _localStateMachine.SwitchState<LoadingState, string>(sceneName);
 |Validate | Returns collection without null elements|
 |NullCheck | Throws an exeption when at least one element is null|
 |ForEach | Make action for each element in collection|
-|Random | Gives random element in collection|
 
 ### C# Examples
 ```C# 
@@ -147,11 +102,16 @@ Health[] children = transform.GetChildrenOfType<Health>();
 | Function name | Description                    |
 | ------------- | ------------------------------ |
 | ThrowNullReferenceException      | Throws specified exception with name of the object caller |
+| ThrowEmptyFieldException      | Throws specified exception with name of the object caller|
 | ThrowArgumentNullException      | Throws specified exception with name of the object caller|
+| ThrowComponentNullException      | Throws specified exception with name of the object caller|
 | ThrowInvalidOperationException      | Throws specified exception with name of the object caller|
 | ThrowArgumentOutOfRangeException      | Throws specified exception with name of the object caller|
 | ThrowIndexOutOfRangeException      | Throws specified exception with name of the object caller|
+| ThrowEventNullException      | Throws specified exception with name of the object caller|
+| ThrowSceneObjectNullException      | Throws specified exception with name of the object caller|
 | ThrowMustBeChildOfException      | Throws specified exception with name of the object caller|
+| ThrowForbiddenInEditorMode      | Throws specified exception with name of the object caller|
 | PrintLogRequestReceived      | Throws specified exception with name of the object caller|
 | PrintLogValueChanged      | Throws specified exception with name of the object caller|
 | PrintLog      | Print debug log message with name of the object caller|
@@ -159,7 +119,6 @@ Health[] children = transform.GetChildrenOfType<Health>();
 | SetPrefix      | Set prefix to the target game object|
 | GetNameWithoutPrefix      | Returns name of the target game object without prefix|
 | With      | Pseudo-builder |
-| ToScene      | Move object to the target scene |
 
 
 ### C# Examples
