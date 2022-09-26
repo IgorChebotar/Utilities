@@ -90,3 +90,14 @@
 ### Removed
 * Unused extensions for the 'Object' class
 * Old state machine 
+
+
+
+
+## [1.4.0] - 2022-09-26
+### Added
+* Container
+* Json utilities
+* Exception and console usilitis
+
+

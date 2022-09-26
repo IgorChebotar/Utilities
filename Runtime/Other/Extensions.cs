@@ -16,14 +16,29 @@ namespace SimpleMan.Utilities
             Debug.Log($"<b>{sender}</b>: {message}");
         }
 
+        public static void Info(object sender, string message)
+        {
+            Debug.Log($"<b>{sender.GetType().Name}</b>: {message}");
+        }
+
         public static void Warning(string sender, string message)
         {
             Debug.LogWarning($"<b>{sender}</b>: {message}");
         }
 
+        public static void Warning(object sender, string message)
+        {
+            Debug.LogWarning($"<b>{sender.GetType().Name}</b>: {message}");
+        }
+
         public static void ValueChangedInfo(string sender, string propertyName, string value)
         {
             Info(sender, $"Value <b> '{propertyName}' </b> has been changed. New value is <b> '{value}' </b>");
+        }
+
+        public static void ValueChangedInfo(object sender, string propertyName, string value)
+        {
+            Info(sender.GetType().Name, $"Value <b> '{propertyName}' </b> has been changed. New value is <b> '{value}' </b>");
         }
     }
 
@@ -31,35 +46,90 @@ namespace SimpleMan.Utilities
     {
         public static void Pure(string sender, string message)
         {
-            throw new Exception($"<b>{sender}</b>: {message}");
+            Debug.LogException(new Exception($"<b>{sender}</b>: {message}"));
+        }
+
+        public static void Pure(object sender, string message)
+        {
+            Debug.LogException(new Exception($"<b>{sender.GetType().Name}</b>: {message}"));
         }
 
         public static void NullReference(string sender, string message)
         {
-            throw new NullReferenceException($"<b>{sender}</b>: {message}");
+            Debug.LogException(new NullReferenceException($"<b>{sender}</b>: {message}"));
+        }
+
+        public static void NullReference(object sender, string message)
+        {
+            Debug.LogException(new NullReferenceException($"<b>{sender.GetType().Name}</b>: {message}"));
+        }
+
+        public static void InvalidArgument(string sender, string argumentName, string message = "")
+        {
+            Debug.LogException(new ArgumentException(
+                $"<b>{sender}</b>: Argument '{argumentName}' is invalid. {message}"));
+        }
+
+        public static void InvalidArgument(object sender, string argumentName, string message = "")
+        {
+            Debug.LogException(new ArgumentException(
+                $"<b>{sender.GetType().Name}</b>: Argument '{argumentName}' is invalid. {message}"));
         }
 
         public static void ArgumentNull(string sender, string argumentName, string message = "")
         {
-            throw new Exception(
-                $"<b>{sender}</b>: Argument '{argumentName}' is null. {message}");
+            Debug.LogException(new Exception(
+                $"<b>{sender}</b>: Argument '{argumentName}' is null. {message}"));
+        }
+
+        public static void ArgumentNull(object sender, string argumentName, string message = "")
+        {
+            Debug.LogException(new Exception(
+                $"<b>{sender.GetType().Name}</b>: Argument '{argumentName}' is null. {message}"));
         }
 
         public static void ArgumentOutOfRange(string sender, string argumentName, string message = "")
         {
-            throw new Exception(
-                $"<b>{sender}</b>: Argument '{argumentName}' is out of range. {message}");
+            Debug.LogException(new Exception(
+                $"<b>{sender}</b>: Argument '{argumentName}' is out of range. {message}"));
+        }
+
+        public static void ArgumentOutOfRange(object sender, string argumentName, string message = "")
+        {
+            Debug.LogException(new Exception(
+                $"<b>{sender.GetType().Name}</b>: Argument '{argumentName}' is out of range. {message}"));
         }
 
         public static void IndexOutOfRange(string sender, string indexname, string message = "")
         {
-            throw new Exception(
-                $"<b>{sender}</b>: Index '{indexname}' is out of range. {message}");
+            Debug.LogException(new Exception(
+                $"<b>{sender}</b>: Index '{indexname}' is out of range. {message}"));
+        }
+
+        public static void IndexOutOfRange(object sender, string indexname, string message = "")
+        {
+            Debug.LogException(new Exception(
+                $"<b>{sender.GetType().Name}</b>: Index '{indexname}' is out of range. {message}"));
         }
 
         public static void InvalidOperation(string sender, string message)
         {
-            throw new InvalidOperationException($"<b>{sender}</b>: {message}");
+            Debug.LogException(new InvalidOperationException($"<b>{sender}</b>: {message}"));
+        }
+
+        public static void InvalidOperation(object sender, string message)
+        {
+            Debug.LogException(new InvalidOperationException($"<b>{sender.GetType().Name}</b>: {message}"));
+        }
+
+        public static void NotImplemented(string sender, string message)
+        {
+            Debug.LogException(new NotImplementedException($"<b>{sender}</b>: {message}"));
+        }
+
+        public static void NotImplemented(object sender, string message)
+        {
+            Debug.LogException(new NotImplementedException($"<b>{sender.GetType().Name}</b>: {message}"));
         }
     }
 
@@ -915,7 +985,21 @@ namespace SimpleMan.Utilities
                 return source;
         }
 
+        /// <summary>
+        /// Assets/Data/File.Asset -> File
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static string ExctractFileNameFromPath(this string path)
+        {
+            int lastSlashIndex = path.LastIndexOf('/');
+            path = path.Substring(lastSlashIndex + 1);
 
+            int lastDotIndex = path.LastIndexOf('.');
+            path = path.Substring(0, lastDotIndex);
+
+            return path;
+        }
 
 
 
