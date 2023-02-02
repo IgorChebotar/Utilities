@@ -1,7 +1,8 @@
 # SimpleMan.Utilities [Download](https://github.com/IgorChebotar/Utilities/releases)
 Standard utilities for any project on Unity engine. 
 
-**Author:** Igor-Valerii Chebotar
+**Authors:** [Igor-Valerii Chebotar](https://www.linkedin.com/in/igor-chebotar/), [Alexey Naumenko](https://www.linkedin.com/in/alexey-naumenko-0766bb59/) 
+<br>
 **Email:**  igor.valerii.chebotar@gmail.com
 
 ## How to install plugin?
@@ -56,6 +57,9 @@ public void ApplyDamage(float damage)
 
 //Try also ChildComponentRef and ParentComponentRef
 ```
+
+## Project and inspector window blocker
+You can block the inspector and project windows using CTRL+SPACE and CTRL+SHIFT+SPACE hot keys
 
 ## Collection extensions
 ### Methods
