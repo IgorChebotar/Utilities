@@ -4,58 +4,8 @@ Standard utilities for any project on Unity engine.
 **Author:** Igor-Valerii Chebotar
 **Email:**  igor.valerii.chebotar@gmail.com
 
-## Requirements
-* [Sirenix - Odin Inspector](https://assetstore.unity.com/packages/tools/utilities/odin-inspector-and-serializer-89041#description "* Sirenix - Odin Inspector")
-
 ## How to install plugin?
-Open installer by the click on Tools -> Simple Man -> Master Installer -> [Plugins' name] -> Click 'Install' button. If you don't have one or more of the plugins this plugin depends on, you must install it first.
-
-
-## Coroutines as MonoBehavior extensions
-create and execute coroutine by one line of code.
-
-### Methods
-| Function name | Description                    |
-| ------------- | ------------------------------ |
-| Delay      | Invoke target method after delay       |
-| DestroyAfter  | Destroy game object after delay    |
-| DestroyComponentAfter      | Destroy component after delay       |
-| WaitFrames     | Invoke target method  after certain number of frames    |
-| WaitUntill      | Invoke target method after condition completed     |
-| RepeatUntill      | Call target method while condition is not complete       |
-| RepeatForever      | Call target method each frame or with delay forever      |
-
-### C# Examples
-```C# 
-//Call 'DoAction' method after 3 seconds
-this.Delay(3, DoAction);
-```
-```C# 
-//Destroy game object after 3 seconds
-this.DestroyAfter(3);
-```
-
-```C# 
-//Call 'DoAction' method after 3 seconds with parameter
-this.Delay(3, ( ) =>DoAction("Hello!"));
-```
-
-
-## Value checkers
-Gives ability to check the value without using 'if' keyword and throw an exception or print log to constole if check was failed. 
-
-### C# Examples
-```C# 
-//Check the "Health" value and call the "Death" method if it is zero, 
-Health.IfEqualZero().Execute(Death);
-
-//Check the "Armor" value and print message 'Armor is broken' to the console if it less than 0.5, . 
-Armor.IfLessThan(0.5f).PrintLog(gameObject.name, "Armor is broken");
-
-//Check the 'HealthBar' class reference and throw and exception if it is null
-HealthBar.IfNull().ThrowException(gameObject.name, "Health isn't exist");
-```
-
+Open installer by the click on Tools -> Simple Man -> Main Installer -> [Plugins' name] -> Click 'Install' button. If you don't have one or more of the plugins this plugin depends on, you must install it first.
 
 
 ## Execute once system
@@ -78,66 +28,113 @@ ExecuteOnceSystem.ExecuteOncePerFrame(DoAction)
 ExecuteOnceSystem.ExecuteOncePerFrame(( ) => DoAction("Hello"))
 ```
 
+## Component reference
+Use this class to make a cached reference to component on current game object.
+This solution is better than standard C# fields and properties, because you don't need 
+to call 'GetComponent' at awake or start and check is component exist when you need to use it.
 
-## State machine
-Make your state machine based on the 'StateMachine' class. It simple! The state machine supports up to 3 arguments in each state and custom tick range.
-
+### C# Examples
 ```C# 
-//Create state machine for the Game class
-StateMachine<Game> _localStateMachine = new StateMachine<Game>()
+private ComponentRef<Health> _healthRef;
+
+
+private void Awake()
 {
-	this,
-    new InitialState<Game>(this),
-    new LoadPlayerProgressState(this, _playerProgressService),
-    new LoadingState(this, _sceneManagerService),
-    new GameLoopState(this, _playerFactory, _uiFactory, _playerProgressService),
-    new EndGameState(this, _playerProgresService, _uiFactory)
-});
+	//Create instance of the reference at awake. Don't forget about this step
+	_healthRef = new ComponentRef<Health>(gameObject);
+}
 
-//Start state machine from the initial state
-_localStateMachine.SwitchState<InitialState>();
-```
+public void ApplyDamage(float damage)
+{
+	//Thats way how you can get access to your 'Health' component. 
+	_healthRef.Value.Decrease(damage);
+    
+    //The component will be cached inside the reference and if it will be destroyed,
+    //you receive message into console and exception in code. So you don't need 
+    //to check if component exist manually
+}
 
-```C# 
-//Switch state with the string parameter
-_localStateMachine.SwitchState<LoadingState, string>(sceneName);
+//Try also ChildComponentRef and ParentComponentRef
 ```
 
 ## Collection extensions
 ### Methods
 | Function name | Description                    |
 | ------------- | ------------------------------ |
-|AddUnique      | Works with list, queue, stack and dictionary. Ignore *Add* action if collection already contains element|
-|Except | Returns collection without element|
-|Validate | Returns collection without null elements|
-|NullCheck | Throws an exeption when at least one element is null|
-|ForEach | Make action for each element in collection|
-|Random | Gives random element in collection|
+|Random | Gives random element in collection |
+|ForEach | Make action for each element in collection |
+|Except | Returns collection without element |
+|Validate | Returns collection without null elements |
+|GetElementIndexByKey | Get index of dictionary pair with specified key |
+|AddUnique | Works with list, queue, stack and dictionary. Ignore *Add* action if collection already contains element|
+|AssertNoNullElements | Throws an exeption when at least one element is null|
+
+
 
 ### C# Examples
 ```C# 
 //Add element only if it isn't exist in collection
-List<GameObject> targetsList = new List<GameObject>();
-gameObjectList.AddUnique(targetObject);
+targetsList.AddUnique(targetObject);
 ```
+
+```C# 
+//Get random color from collecion
+Color randomColor = colorsCollection.Random();
+```
+
+```C# 
+//Reset position for each game object in list
+targetsList.Foreach(x => x.transform.position = Vector3.zero);
+```
+
+
+
 
 ## Transform extensions
 ### Methods
 | Function name | Description                    |
 | ------------- | ------------------------------ |
-| GetChildren      | Return array of direct children transforms|
-| GetChildrenOfType      | Return array of direct children that have certain component|
-| DestroyChildren      | Destroy all children of current transform|
-| DestroyChildrenImmediate      | Destroy all children of current transform (for editor mode)|
+| IsDirectChildOf | Retruns true if specified object is direct child of this object |
+| IsDirectParentOf | Retruns true if specified object is direct parent of this object |
+| GetDirectChildren | Get only direct children for this transform |
+| GetDirectChildrenOfType | Returns array of direct children that have certain component |
+| DestroyChildren | Destroy all children of current transform |
+| DestroyChildrenImmediate | Destroy all children of current transform (for editor mode) |
+| SetPositionAndRotation | Set position and rotation using *PositionAndRotation* structure |
+| SetLocalPositionAndRotation | Set local position and rotation using *PositionAndRotation* structure |
+| GetPositionAndRotation | Returns *PositionAndRotation* structure |
+| GetLocalPositionAndRotation | Returns *PositionAndRotation* structure |
 
 ### C# Examples
 ```C# 
-//Get children array
-Transform[] children = transform.GetChildren();
+//Destroy all children
+transform.DestroyChildren();
+```
+
+```C# 
+//Get direct children array
+Transform[] children = transform.GetDirectChildren();
 ```
 ```C# 
-//Get children array with 'Health' component
-Health[] children = transform.GetChildrenOfType<Health>();
+//Get only direct children with 'Health' component
+Health[] children = transform.GetDirectChildrenOfType<Health>();
+```
+
+
+
+
+## Component extensions
+### Methods
+| Function name | Description                    |
+| ------------- | ------------------------------ |
+| TryGetComponentInChildren | Return true if at least one child of this object have certain component|
+| TryGetComponentInParent |  Return true if at least one parent of this object have certain component|
+
+### C# Examples
+```C# 
+//Throws exception if parent object don't have 'Animator' component
+if(TryGetComponentInParent<Animator>(out Animator animator) == false)
+	throw new NullReferenceException("Animator was not found in chilren");
 ```
 
 
@@ -146,64 +143,127 @@ Health[] children = transform.GetChildrenOfType<Health>();
 ### Methods
 | Function name | Description                    |
 | ------------- | ------------------------------ |
-| ThrowNullReferenceException      | Throws specified exception with name of the object caller |
-| ThrowArgumentNullException      | Throws specified exception with name of the object caller|
-| ThrowInvalidOperationException      | Throws specified exception with name of the object caller|
-| ThrowArgumentOutOfRangeException      | Throws specified exception with name of the object caller|
-| ThrowIndexOutOfRangeException      | Throws specified exception with name of the object caller|
-| ThrowMustBeChildOfException      | Throws specified exception with name of the object caller|
-| PrintLogRequestReceived      | Throws specified exception with name of the object caller|
-| PrintLogValueChanged      | Throws specified exception with name of the object caller|
-| PrintLog      | Print debug log message with name of the object caller|
-| PrintWarning      | Print debug log warning message with name of the object caller|
-| SetPrefix      | Set prefix to the target game object|
-| GetNameWithoutPrefix      | Returns name of the target game object without prefix|
-| With      | Pseudo-builder |
-| ToScene      | Move object to the target scene |
+| FindObjectOfType | Returns first object of specified type on scene (interfaces supported) |
+| FindObjectsOfType | Returns array of objects of specified type on scene (interfaces supported) |
+| With | Pseudo-builder |
+| PrintLog  | Print debug log message with name of the object caller |
+| PrintWarning | Print debug log warning message with name of the object caller |
+| PrintError | Print debug log error message with name of the object caller |
+| SetSquarePrefix | ObjectName -> [Prefix]ObjectName |
+| GetNameWithoutSquarePrefix | Returns name of the target game object without prefix |
+| SetUnderscorePrefix | ObjectName -> Prefix_ObjectName |
+| GetNameWithoutUnderscorePrefix | Returns name of the target game object without prefix |
+| ToScene | Move object to the target scene |
 
 
 ### C# Examples
 ```C# 
 //Throw exception
 if(_health == null)
-	this.ThrowNullReferenceException("Component 'Health' not exist");
+	this.PrintWarning("Component 'Health' not exist");
 ```
 ```C# 
 //Game object name will look like this '[Player]PreviousName'
 this.SetPrefix("Player");
 ```
+```C# 
+//Find interactable object on scene
+IInteractable interactable = this.FindObjectOfType<IInteractable>();
+```
 
 
-## Component extensions
-### Methods
+
+
+## Base types extensions
+### Methods (object)
 | Function name | Description                    |
 | ------------- | ------------------------------ |
-| TryGetComponentInChildren      | Return true if at least one child of this object have certain component|
-| TryGetComponentInParent      |  Return true if at least one parent of this object have certain component|
+| (object) Exist | Returns true if object is not null |
+| (object) NotExist | Returns true if object is null |
 
 ### C# Examples
 ```C# 
-//Throws exception if parent object don't have 'Animator' component
-if(TryGetComponentInParent<Animator>(out Animator animator) == false)
-	this.ThrowMustBeChildOfException("Animator");
+//Before
+if(target != null)
+{
+	...
+}
+
+//After
+//Supports also UnityEngine.Object and their special 
+//null checking
+if(target.Exist())
+{
+	...
+}
 ```
 
-## Base types extensions
-### Methods
+### Methods (string)
 | Function name | Description                    |
 | ------------- | ------------------------------ |
-| (string) ToSplitPascalCase| SadButTrue -> Sad But True|
-| (string) WithoutSpaces| Sad But True -> SadButTrue|
-| (float, int) ClampPositive      | Return closest positive value |
-| (string) FirstCharToUpper      | Return string with upper first character |
-| (Vector2) XY2XZ      | Return Vector3 as projection of XY plane to XZ |
-| (Vector3) XZ2XY      | Return Vector2 as projection of XZ plane to XY. Y value will be ignored |
-| (Color) Invert      | Return inverted color |
-| (Color) MaxAlpha      | Return the same color with maximum alpha |
-| (Color) MinAlpha      | Return the same color with zero alpha |
-| (Matrix4x4) ExtractRotation      | Return Quaternion rotation value from transform matrix |
-| (Matrix4x4) ExtractPosition      | Return Vector3 position value from transform matrix |
-| (Matrix4x4) ExtractScale      | Return Vector3 scale value from transform matrix |
+| FirstCharToUpper | sad but true -> Sad but true |
+| ToSplitPascalCase | SadButTrue -> Sad But True |
+| WithUnderscorePrefix | ObjectName -> Prefix_ObjectName |
+| WithoutUnderscorePrefix | Prefix_ObjectName -> ObjectName |
+| WithSquarePrefix | ObjectName -> [Prefix]ObjectName |
+| WithoutSquarePrefix | [Prefix]ObjectName -> ObjectName |
+| ExctractFileNameFromPath | Assets/Data/File.Asset -> File |
+| RemoveClone | SomeObject (Clone) -> SomeObject |
+
+### Methods (int and float)
+| Function name | Description                    |
+| ------------- | ------------------------------ |
+| (float, int) ClampPositive | Return closest positive value |
+| (float, int) Clamp01 | Return value from 0 to 1 |
+| (float, int) Abs | Returns absolute value |
+| (float, int) InRange | Returns true if value within target range |
+| (float, int) OutOfRange | Returns true if value out of target range |
+| (float) ClampAsAxis | Return value from -1 to 1 |
+| (float) Round | Returns closest value to int |
+| (float) RoundToInt | Returns closest value to int and converts it to int |
+| (float) Floor | Returns the largest integral value less than or equal to the specified number |
+| (float) FloorToInt | Returns the largest integral value less than or equal to the specified number and converts it to int |
+| (float) Ceil | Returns the smallest integral value greater than or equal to the specified number |
+| (float) CeilToInt | Returns the smallest integral value greater than or equal to the specified number and converts it to int |
+
+
+### C# Examples
+```C# 
+private float _health;
+
+//You will never see Health value as negative,
+//because method 'ClampPositive' clamps value 
+//from 0 to positive infinity
+public float Health 
+{
+	get => _health;
+    set => _health => value.ClampPositive();
+}
+```
+
+```C# 
+private List<GameObject> _targets;
+
+public void GetTargetAtIndex(int index)
+{
+	//Throw exception if index is out of range.
+    //Before
+    if(index < 0 || index > _targets.Count)
+    	throw new OutOfRangeException("Index is out of range");
+    
+    //After
+	if(index.OutOfRange(0, _targets.Count)
+    	throw new OutOfRangeException("Index is out of range");
+    
+    return _targets[index];
+}
+```
+
+### Methods (Vector2 and Vector3)
+| Function name | Description                    |
+| ------------- | ------------------------------ |
+| (Vector2) XY2XZ | Return Vector3 as projection of XY plane to XZ |
+| (Vector3) XZ2XY | Return Vector2 as projection of XZ plane to XY. Y value will be ignored |
 
 ### C# Examples
 ```C# 
@@ -211,14 +271,22 @@ if(TryGetComponentInParent<Animator>(out Animator animator) == false)
 Vector2 position2D = transform.position.XZ2XY();
 ```
 
-```C# 
-//Health can not be negative, so clamp it.
-public float Health
-{
-	get => _health;
-	set => _health = value.ClampPositive();
-}
-```
+### Methods (Color)
+| Function name | Description                    |
+| ------------- | ------------------------------ |
+| Invert | Return inverted color |
+| MaxAlpha | Return the same color with maximum alpha |
+| MinAlpha | Return the same color with zero alpha |
+
+### Methods (Matrix4x4)
+| Function name | Description                    |
+| ------------- | ------------------------------ |
+| ExtractRotation | Return Quaternion rotation value from transform matrix |
+| ExtractPosition | Return Vector3 position value from transform matrix |
+| ExtractScale | Return Vector3 scale value from transform matrix |
+
+
+
 
 ## Mathematics
 ### Methods
@@ -251,30 +319,5 @@ _crosshair.transform.position =
 		XY2XZ();
 }
 ```
-
-
-
-## Ranges
-Serializable int and float ranges stucts for using in inspector or in code.
-
-### Properties
-| Property name | Description                    |
-| ------------- | ------------------------------ |
-|Min      | Clamped from negative infinity to max value |
-|Max      | Clamped from min value to positive infinity |
-
-
-### Methods
-| Function name | Description                    |
-| ------------- | ------------------------------ |
-|IntRange      | Return true if value is in the range|
-|Clamp      | Return clamped value to current range|
-
-### C# Examples
-```C# 
-//Pair attack time range where 0 - first frame of attack, 1 - last frame of attack.
-FloatRange parryTime = new FloatRange(0.7f, 0.9f);
-```
-
 
 

@@ -17,7 +17,6 @@ namespace SimpleMan.Utilities
 
 
 
-        //------METHODS
         public static void ExecuteOnceInNextFrame(Action action)
         {
             _frameActions.AddUnique(action);
