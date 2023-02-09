@@ -79,12 +79,14 @@ namespace SimpleMan.Utilities
 
         public static void SetPositionAndRotation(this Transform target, PositionAndRotation value)
         {
-            target.SetPositionAndRotation(value.position, value.rotation);
+            target.position = value.position;
+            target.rotation = value.rotation;   
         }
 
         public static void SetLocalPositionAndRotation(this Transform target, PositionAndRotation value)
         {
-            target.SetLocalPositionAndRotation(value.position, value.rotation);
+            target.localPosition = value.position;
+            target.localRotation = value.rotation;
         }
 
         public static PositionAndRotation GetPositionAndRotation(this Transform target)

@@ -218,7 +218,7 @@ namespace SimpleMan.Utilities
         /// <returns></returns>
         public static string RemoveClone(this string source)
         {
-            if (!source.Contains('('))
+            if (!source.Contains("("))
                 return source;
 
             int index = source.IndexOf('(');
