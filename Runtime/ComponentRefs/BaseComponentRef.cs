@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SimpleMan.Utilities
 {
-    public abstract class BaseComponentRef<T> where T : Component
+    public abstract class BaseComponentRef<T> 
     {
         private readonly bool _required;
         private T _value;

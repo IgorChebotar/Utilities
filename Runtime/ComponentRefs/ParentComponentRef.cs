@@ -2,7 +2,7 @@
 
 namespace SimpleMan.Utilities
 {
-    public class ParentComponentRef<T> : BaseComponentRef<T> where T : Component
+    public class ParentComponentRef<T> : BaseComponentRef<T>
     {
         public ParentComponentRef(GameObject owner, bool required = true) : base(owner, required)
         {
