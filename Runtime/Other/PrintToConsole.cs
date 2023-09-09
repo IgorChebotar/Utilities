@@ -4,34 +4,60 @@ namespace SimpleMan.Utilities
 {
     public static class PrintToConsole
     {
-        public static void Info(string sender, string message)
+        /// <summary>
+        /// Use <b>Sender: Message</b> pattern to print your messages 
+        /// to the Unity console.
+        /// Example: PrintToConsole.Info("Player: Got 5 damage points from zombie") -> 
+        /// <b>Player: </b> Got 5 damage points from zombie.
+        /// </summary>
+        /// <param name="message"></param>
+        public static void Info(string message)
         {
-            Debug.Log($"<b>{sender}</b>: {message}");
+            Debug.Log(PrepareToPrint(message));
         }
 
-        public static void Info(object sender, string message)
+        /// <summary>
+        /// Use <b>Sender: Message</b> pattern to print your messages 
+        /// to the Unity console.
+        /// Example: PrintToConsole.Info("Player: Got 5 damage points from zombie") -> 
+        /// <b>Player: </b> Got 5 damage points from zombie.
+        /// </summary>
+        /// <param name="message"></param>
+        public static void Warning(string message)
         {
-            Debug.Log($"<b>{sender.GetType().Name}</b>: {message}");
+            Debug.LogWarning(PrepareToPrint(message));
         }
 
-        public static void Warning(string sender, string message)
+        /// <summary>
+        /// Use <b>Sender: Message</b> pattern to print your messages 
+        /// to the Unity console.
+        /// Example: PrintToConsole.Info("Player: Got 5 damage points from zombie") -> 
+        /// <b>Player: </b> Got 5 damage points from zombie.
+        /// </summary>
+        /// <param name="message"></param>
+        public static void Error(string message)
         {
-            Debug.LogWarning($"<b>{sender}</b>: {message}");
+            Debug.LogError(PrepareToPrint(message));
         }
 
-        public static void Warning(object sender, string message)
+        private static string PrepareToPrint(string source)
         {
-            Debug.LogWarning($"<b>{sender.GetType().Name}</b>: {message}");
-        }
+            if(string.IsNullOrEmpty(source))
+                return source;
 
-        public static void Error(string sender, string message)
-        {
-            Debug.LogError($"<b>{sender}</b>: {message}");
-        }
-
-        public static void Error(object sender, string message)
-        {
-            Debug.LogError($"<b>{sender.GetType().Name}</b>: {message}");
+            string[] splitted = source.Split(':', 2);
+            if (splitted.Length != 2)
+            {
+                return source;
+            }
+            else
+            {
+#if UNITY_EDITOR
+                return $"{splitted[0].Bold()}: {splitted[1]}";
+#else
+                return source;
+#endif
+            }
         }
     }
 }

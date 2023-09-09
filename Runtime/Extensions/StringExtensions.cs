@@ -1,51 +1,10 @@
 ﻿using System.Globalization;
 using System.Text;
-using UnityEngine;
 
 namespace SimpleMan.Utilities
 {
-    public static class BaseTypesExtensions
+    public static class StringExtensions
     {
-        /// <summary>
-        /// Returns true if object is null
-        /// </summary>
-        /// <param name="target"></param>
-        /// <returns></returns>
-        public static bool NotExist(this object target)
-        {
-            return target == null;
-        }
-
-        /// <summary>
-        /// Returns true if object is null
-        /// </summary>
-        /// <param name="target"></param>
-        /// <returns></returns>
-        public static bool NotExist(this UnityEngine.Object target)
-        {
-            return !target;
-        }
-
-        /// <summary>
-        /// Returns true if object is not null
-        /// </summary>
-        /// <param name="target"></param>
-        /// <returns></returns>
-        public static bool Exist(this object target)
-        {
-            return target != null;
-        }
-
-        /// <summary>
-        /// Returns true if object is not null
-        /// </summary>
-        /// <param name="target"></param>
-        /// <returns></returns>
-        public static bool Exist(this UnityEngine.Object target)
-        {
-            return target;
-        }
-
         /// <summary>
         /// sad but true -> Sad but true
         /// </summary>
@@ -205,14 +164,18 @@ namespace SimpleMan.Utilities
             int lastSlashIndex = path.LastIndexOf('/');
             path = path.Substring(lastSlashIndex + 1);
 
+            lastSlashIndex = path.LastIndexOf('\\');
+            path = path.Substring(lastSlashIndex + 1);
+
             int lastDotIndex = path.LastIndexOf('.');
-            path = path.Substring(0, lastDotIndex);
+            if (lastDotIndex != -1)
+                path = path.Substring(0, lastDotIndex);
 
             return path;
         }
 
         /// <summary>
-        /// SomeObject (Clone) -> SomeObject
+        /// SomeObjectName (Clone) -> SomeObjectName
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
@@ -225,189 +188,106 @@ namespace SimpleMan.Utilities
             return source.Substring(0, index);
         }
 
-        public static float Clamp(this float value, float min, float max)
+        /// <summary>
+        /// Marks your text as bold in Unity console.
+        /// Your message text -> <b>Your message text</b>
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static string Bold(this string source)
         {
-            return Mathf.Clamp(value, min, max);
-        }
-
-        public static int Clamp(this int value, float min, float max)
-        {
-            return Mathf.RoundToInt(Mathf.Clamp(value, min, max));
+            return $"<b>{source}</b>";
         }
 
         /// <summary>
-        /// From 0 to infinity
+        /// Marks your text as italic in Unity console.
+        /// Example: Your message text -> <i>Your message text</i>
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="source"></param>
         /// <returns></returns>
-        public static float ClampPositive(this float value)
+        public static string Italic(this string source)
         {
-            return Mathf.Clamp(value, 0, float.PositiveInfinity);
+            return $"<i>{source}</i>";
         }
 
         /// <summary>
-        /// From 0 to max value (2147483647)
+        /// Marks your text as colored in Unity console.
+        /// Example: Your message text -> <color=colorCode>Your message text</color>
         /// </summary>
-        /// <param name="value"></param>
         /// <returns></returns>
-        public static int ClampPositive(this int value)
+        public static string SetColor(this string source, string colorCode)
         {
-            return Mathf.Clamp(value, 0, int.MaxValue);
+            return $"<color={colorCode}>{source}</color>";
         }
 
         /// <summary>
-        /// From 0 to 1
+        /// Marks your text as colored in Unity console.
+        /// Example: Your message text -> <color=red>Your message text</color>
         /// </summary>
-        /// <param name="value"></param>
         /// <returns></returns>
-        public static float Clamp01(this float value)
+        public static string SetColorRed(this string source)
         {
-            return Mathf.Clamp01(value);
+            return source.SetColor("red");
         }
 
         /// <summary>
-        /// From -1 to 1
+        /// Marks your text as colored in Unity console.
+        /// Example: Your message text -> <color=green>Your message text</color>
         /// </summary>
-        /// <param name="value"></param>
         /// <returns></returns>
-        public static float ClampAsAxis(this float value)
+        public static string SetColorGreen(this string source)
         {
-            return Mathf.Clamp(value, -1, 1);
+            return source.SetColor("green");
         }
 
-        public static int RoundToInt(this float value)
+        /// <summary>
+        /// Marks your text as colored in Unity console.
+        /// Example: Your message text -> <color=blue>Your message text</color>
+        /// </summary>
+        /// <returns></returns>
+        public static string SetColorBlue(this string source)
         {
-            return Mathf.RoundToInt(value);
+            return source.SetColor("blue");
         }
 
-        public static float Round(this float value)
+        /// <summary>
+        /// Marks your text as colored in Unity console.
+        /// Example: Your message text -> <color=yellow>Your message text</color>
+        /// </summary>
+        /// <returns></returns>
+        public static string SetColorYellow(this string source)
         {
-            return Mathf.Round(value);
+            return source.SetColor("yellow");
         }
 
-        public static int FloorToInt(this float value)
+        /// <summary>
+        /// Marks your text as colored in Unity console.
+        /// Example: Your message text -> <color=gray>Your message text</color>
+        /// </summary>
+        /// <returns></returns>
+        public static string SetColorGray(this string source)
         {
-            return Mathf.FloorToInt(value);
+            return source.SetColor("gray");
         }
 
-        public static float Floor(this float value)
+        /// <summary>
+        /// Marks your text as colored in Unity console.
+        /// Example: Your message text -> <color=black>Your message text</color>
+        /// </summary>
+        /// <returns></returns>
+        public static string SetColorBlack(this string source)
         {
-            return Mathf.Floor(value);
+            return source.SetColor("black");
         }
 
-        public static int CeilToInt(this float value)
+        /// <summary>
+        /// Marks your text as colored in Unity console.
+        /// Example: Your message text -> <color=white>Your message text</color>
+        /// </summary>
+        /// <returns></returns>
+        public static string SetColorWhite(this string source)
         {
-            return Mathf.CeilToInt(value);
-        }
-
-        public static float Ceil(this float value)
-        {
-            return Mathf.Ceil(value);
-        }
-
-        public static int Abs(this int value)
-        {
-            return Mathf.Abs(value);
-        }
-
-        public static float Abs(this float value)
-        {
-            return Mathf.Abs(value);
-        }
-
-        public static bool InRange(this float value, float min, float max)
-        {
-            return value >= min && value <= max;
-        }
-
-        public static bool InRange(this int value, float min, float max)
-        {
-            return value >= min && value <= max;
-        }
-
-        public static bool OutOfRange(this float value, float min, float max)
-        {
-            return value < min || value > max;
-        }
-
-        public static bool OutOfRange(this int value, float min, float max)
-        {
-            return value < min || value > max;
-        }
-
-        public static Vector3 XY2XZ(this Vector2 target)
-        {
-            return new Vector3(target.x, 0, target.y);
-        }
-
-        public static Vector2 XZ2XY(this Vector3 target)
-        {
-            return new Vector2(target.x, target.z);
-        }
-
-        public static Color Invert(this Color value)
-        {
-            return new Color(1 - value.r, 1 - value.g, 1 - value.b);
-        }
-
-        public static Color WithAlpha(this Color value, float alpha)
-        {
-            return new Color(
-                    value.r,
-                    value.g,
-                    value.b,
-                    Mathf.Clamp01(alpha));
-        }
-
-        public static Color MaxAlpha(this Color value)
-        {
-            return new Color(
-                    value.r,
-                    value.g,
-                    value.b,
-                    1);
-        }
-
-        public static Color MinAlpha(this Color value)
-        {
-            return new Color(
-                    value.r,
-                    value.g,
-                    value.b,
-                    0);
-        }
-
-        public static Quaternion ExtractRotation(this Matrix4x4 matrix)
-        {
-            Vector3 forward;
-            forward.x = matrix.m02;
-            forward.y = matrix.m12;
-            forward.z = matrix.m22;
-
-            Vector3 upwards;
-            upwards.x = matrix.m01;
-            upwards.y = matrix.m11;
-            upwards.z = matrix.m21;
-
-            return Quaternion.LookRotation(forward, upwards);
-        }
-
-        public static Vector3 ExtractPosition(this Matrix4x4 matrix)
-        {
-            Vector3 position;
-            position.x = matrix.m03;
-            position.y = matrix.m13;
-            position.z = matrix.m23;
-            return position;
-        }
-
-        public static Vector3 ExtractScale(this Matrix4x4 matrix)
-        {
-            Vector3 scale;
-            scale.x = new Vector4(matrix.m00, matrix.m10, matrix.m20, matrix.m30).magnitude;
-            scale.y = new Vector4(matrix.m01, matrix.m11, matrix.m21, matrix.m31).magnitude;
-            scale.z = new Vector4(matrix.m02, matrix.m12, matrix.m22, matrix.m32).magnitude;
-            return scale;
+            return source.SetColor("white");
         }
     }
 }

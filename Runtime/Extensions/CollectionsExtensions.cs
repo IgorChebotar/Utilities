@@ -1,12 +1,66 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Object = UnityEngine.Object;
 
 namespace SimpleMan.Utilities
 {
     public static class CollectionsExtensions
     {
+        /// <summary>
+        /// Returns true if count of elements equals zero
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static bool IsEmpty<T>(this IReadOnlyList<T> source)
+        {
+            return source.Count == 0;
+        }
+
+        /// <summary>
+        /// Returns true if collection contains at least one element
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static bool IsNotEmpty<T>(this IReadOnlyList<T> source)
+        {
+            return source.Count > 0;
+        }
+
+        /// <summary>
+        /// Returns true if count of elements equals zero
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static bool IsEmpty<T>(this T[] source)
+        {
+            return source.Length == 0;
+        }
+
+        /// <summary>
+        /// Returns true if collection contains at least one element
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static bool IsNotEmpty<T>(this T[] source)
+        {
+            return source.Length > 0;
+        }
+
+        /// <summary>
+        /// Returns true if count of elements equals zero
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static bool IsEmpty<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> source)
+        {
+            return source.Count == 0;
+        }
+
         /// <summary>
         /// Returns random element from collection
         /// </summary>
@@ -29,6 +83,19 @@ namespace SimpleMan.Utilities
         {
             foreach (T item in source)
                 action(item);
+        }
+
+        /// <summary>
+        /// Mark each elements as null or set default value. Don't decrease elements count
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        public static void ResetAllElements<T>(this T[] source)
+        {
+            for (int i = 0; i < source.Length; i++)
+            {
+                source[i] = default;
+            }
         }
 
         /// <summary>
@@ -185,6 +252,102 @@ namespace SimpleMan.Utilities
                 return;
             else
                 target.Add(key, value);
+        }
+
+        public static void IfContainsKey<TKey, TValue>(this IDictionary<TKey, TValue> target, TKey key, Action<TValue> action)
+        {
+            if (!target.ContainsKey(key))
+                return;
+
+            TValue value = target[key];
+            action?.Invoke(value);
+        }
+
+        /// <summary>
+        /// Adds a value to the array and wraps the elements when the array is full.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements in the array.</typeparam>
+        /// <param name="target">The array to which the value should be added.</param>
+        /// <param name="value">The value to be added to the array.</param>
+        public static void AddAndWrap<T>(this T[] target, T value)
+        {
+            for (int i = 0; i < target.Length; i++)
+            {
+                if (target[i] == null)
+                {
+                    target[i] = value;
+                    return;
+                }
+            }
+
+            if(target.Length < 1)
+            {
+                throw new InvalidOperationException(
+                    "Target array's lenght must be longer than 0");
+            }
+
+            for (int i = 1; i < target.Length; i++)
+            {
+                T element = target[i];
+                target[i - 1] = element;
+            }
+
+            target[target.Length - 1] = value;
+        }
+
+        /// <summary>
+        /// Adds a value to the array and wraps the elements when the array is full.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements in the array.</typeparam>
+        /// <param name="target">The array to which the value should be added.</param>
+        /// <param name="value">The value to be added to the array.</param>
+        /// <param name="nullElement">The element that represents null within the array.</param>
+        public static void AddAndWrap<T>(this T[] target, T value, T nullElement) where T : unmanaged
+        {
+            for (int i = 0; i < target.Length; i++)
+            {
+                if (EqualityComparer<T>.Default.Equals(target[i], nullElement))
+                {
+                    target[i] = value;
+                    return;
+                }
+            }
+
+            if (target.Length < 1)
+            {
+                throw new InvalidOperationException(
+                    "Target array's lenght must be longer than 0");
+            }
+
+            for (int i = 1; i < target.Length; i++)
+            {
+                T element = target[i];
+                target[i - 1] = element;
+            }
+
+            target[target.Length - 1] = value;
+        }
+
+        /// <summary>
+        /// Adds a value to the list and wraps the elements when the list is full.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements in the list.</typeparam>
+        /// <param name="target">The list to which the value should be added.</param>
+        /// <param name="value">The value to be added to the list.</param>
+        public static void AddAndWrap<T>(this List<T> target, T value)
+        {
+            if (target.Count == target.Capacity)
+            {
+                for (int i = 1; i < target.Count; i++)
+                {
+                    T element = target[i];
+                    target[i - 1] = element;
+                }
+
+                target.RemoveAt(target.Count - 1);
+            }
+
+            target.Add(value);
         }
     }
 }

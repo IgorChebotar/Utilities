@@ -39,13 +39,9 @@ namespace SimpleMan.Utilities
         [Serializable]
         private struct JsonWrapper<T>
         {
-            //------FIELDS
             public T[] array;
 
 
-
-
-            //------CONSTRUCTORS
             public JsonWrapper(T[] array)
             {
                 this.array = array;

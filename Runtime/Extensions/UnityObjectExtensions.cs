@@ -13,10 +13,9 @@ namespace SimpleMan.Utilities
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static T FindObjectOfType<T>() where T : class
+        public static T FindObjectOfType<T>()
         {
-            MonoBehaviour[] allMonobehaviors = Object.FindObjectsOfType<MonoBehaviour>();
-            return allMonobehaviors.OfType<T>().First();
+            return FindObjectsOfType<T>().FirstOrDefault();
         }
 
         /// <summary>
@@ -24,9 +23,9 @@ namespace SimpleMan.Utilities
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static T[] FindObjectsOfType<T>() where T: class
+        public static T[] FindObjectsOfType<T>()
         {
-            MonoBehaviour[] allMonobehaviors = Object.FindObjectsOfType<MonoBehaviour>();
+            MonoBehaviour[] allMonobehaviors = Object.FindObjectsOfType<MonoBehaviour>(true);
             return allMonobehaviors.OfType<T>().ToArray();
         }
 
@@ -82,7 +81,7 @@ namespace SimpleMan.Utilities
         /// <param name="message"></param>
         public static void PrintLog(this Object target, string message)
         {
-            PrintToConsole.Info(target.name.WithoutSquarePrefix(), message);
+            PrintToConsole.Info(target.name.WithoutSquarePrefix() + ": " + message);
         }
 
         /// <summary>
@@ -92,7 +91,7 @@ namespace SimpleMan.Utilities
         /// <param name="message"></param>
         public static void PrintWarning(this Object target, string message)
         {
-            PrintToConsole.Warning(target.name.WithoutSquarePrefix(), message);
+            PrintToConsole.Warning(target.name.WithoutSquarePrefix() + ": " + message);
         }
 
         /// <summary>
@@ -102,7 +101,7 @@ namespace SimpleMan.Utilities
         /// <param name="message"></param>
         public static void PrintError(this Object target, string message)
         {
-            PrintToConsole.Error(target.name.WithoutSquarePrefix(), message);
+            PrintToConsole.Error(target.name.WithoutSquarePrefix() + ": " + message);
         }
 
         /// <summary>

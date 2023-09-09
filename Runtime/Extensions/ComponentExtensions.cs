@@ -15,5 +15,11 @@ namespace SimpleMan.Utilities
             component = target.GetComponentInParent<T>();
             return component != null;
         }
+
+        public static void StopCoroutineIfExist(this MonoBehaviour source, Coroutine coroutine)
+        {
+            if (coroutine != null)
+                source.StopCoroutine(coroutine);
+        }
     }
 }

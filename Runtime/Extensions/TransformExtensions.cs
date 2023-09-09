@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -6,6 +7,12 @@ namespace SimpleMan.Utilities
 {
     public static class TransformExtensions
     {
+        public static Transform FindInChildren(this Transform target, string name)
+        {
+            Transform[] allChildren = target.GetComponentsInChildren<Transform>();
+            return allChildren.FirstOrDefault(x => x.name == name);
+        }
+
         public static bool IsDirectChildOf(this Transform child, Transform parent)
         {
             return child.parent == parent;
